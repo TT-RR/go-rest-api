@@ -1,6 +1,7 @@
 package db
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -12,12 +13,15 @@ import (
 
 func NewDB() *gorm.DB {
 	//設定ファイルの読み込み
-	if os.Getenv("GO_ENV") == "dev" {
+	var flag_env = flag.String("GO_ENV", "", "開発環境フラグ")
+	flag.Parse()
+	if *flag_env == "dev" {
 		err := godotenv.Load()
-		if err == nil {
+		if err != nil {
 			log.Fatalln(err)
 		}
 	}
+
 	//書式の通りにURLを作成
 	url := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("POSTGRES_USER"),
 		os.Getenv("POSTGRES_PW"), os.Getenv("POSTGRES_HOST"),
