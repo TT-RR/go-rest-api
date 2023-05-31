@@ -11,5 +11,15 @@ services:
     restart: always
     networks:
       - lesson
+
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - lesson
+
 networks:
   lesson:
