@@ -41,5 +41,4 @@ func CloseDB(db *gorm.DB) {
 	if err := sqldb.Close(); err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Println("DB Closed Success")
 }
