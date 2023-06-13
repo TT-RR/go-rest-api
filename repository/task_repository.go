@@ -48,10 +48,13 @@ func (tr *taskRepository) CreateTask(task *model.Task) error {
 }
 
 func (tr *taskRepository) UpdateTask(task *model.Task, userId uint, taskId uint) error {
+	//Model…taskのポインターを渡す　Clauses…ポインターの先の値を書き換える　Where…条件を指定　Update…更新するカラムを指定
 	result := tr.db.Model(task).Clauses(clause.Returning{}).Where("id=? AND user_id=?", taskId, userId).Update("title", task.Title)
 	if result.Error != nil {
 		return result.Error
 	}
+	//RowsAffected…更新された行数を返す
+	//0の場合はそもそも存在していない
 	if result.RowsAffected < 1 {
 		return fmt.Errorf("object not found")
 	}
