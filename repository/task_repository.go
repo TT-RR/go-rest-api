@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"go-rest-api/model"
 
 	"gorm.io/gorm"
@@ -39,13 +40,20 @@ func (tr *taskRepository) GetTaskByID(task *model.Task, userId uint, taskId uint
 	return nil
 }
 
-func (tr *taskRepository) CreateTask(task *model.Task) error{
+func (tr *taskRepository) CreateTask(task *model.Task) error {
 	if err := tr.db.Create(task).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (tr *taskRepository) UpdateTask(task *model.Task, userId uint, taskId uint) error{
-	result := tr.db.Model(task).Clauses(clause.Returning{}).Where("id=? AND user_id=?", taskId).Updates(map[string]interface{}{
+func (tr *taskRepository) UpdateTask(task *model.Task, userId uint, taskId uint) error {
+	result := tr.db.Model(task).Clauses(clause.Returning{}).Where("id=? AND user_id=?", taskId, userId).Update("title", task.Title)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected < 1 {
+		return fmt.Errorf("object not found")
+	}
+	return nil
 }
