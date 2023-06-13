@@ -22,7 +22,21 @@ func NewTaskUsecase(tr repository.ITaskRepository) ITaskUseCase {
 }
 
 func (tu *taskUsecase) GetAllTasks(userId uint) ([]model.TaskResponse, error) {
-
+	tasks := []model.Task{}
+	if err := tu.tr.GetAllTasks(&tasks, userId); err != nil {
+		return nil, err
+	}
+	resTasks := []model.TaskResponse{}
+	for _, v := range tasks {
+		t := model.TaskResponse{
+			ID:       v.ID,
+			Title:    v.Title,
+			CreateAt: v.CreateAt,
+			UpdateAt: v.UpdateAt,
+		}
+		resTasks = append(resTasks, t)
+	}
+	return resTasks, nil
 }
 
 func (tu *taskUsecase) GetTaskByID(userId uint, taskId uint) ([]model.TaskResponse, error) {
