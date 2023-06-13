@@ -60,3 +60,14 @@ func (tr *taskRepository) UpdateTask(task *model.Task, userId uint, taskId uint)
 	}
 	return nil
 }
+
+func (tr *taskRepository) DeleteTask(userId uint, taskId uint) error {
+	result := tr.db.Where("id=? AND user_id=?", taskId, userId).Delete(&model.Task{})
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected < 1 {
+		return fmt.Errorf("object not found")
+	}
+	return nil
+}
