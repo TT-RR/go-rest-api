@@ -3,6 +3,7 @@ package controller
 import (
 	"go-rest-api/usecase"
 	"net/http"
+	"strconv"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
@@ -40,8 +41,10 @@ func (tc *taskController) GetTaskById(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userId := claims["userId"]
+	id := c.Param("taskId")
+	taskId, _ := strconv.Atoi(id)
 
-	tasksRes, err := tc.tu.GetAllTasks(uint(userId.(float64)))
+	tasksRes, err := tc.tu.GetTaskById(uint(userId.(float64)), uint(taskId))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
