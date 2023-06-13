@@ -21,6 +21,7 @@ func NewTaskUsecase(tr repository.ITaskRepository) ITaskUsecase {
 	return &taskUsecase{tr}
 }
 
+// 渡されたユーザIDと一致するユーザIDのタスク一覧を取得
 func (tu *taskUsecase) GetAllTasks(userId uint) ([]model.TaskResponse, error) {
 	tasks := []model.Task{}
 	if err := tu.tr.GetAllTasks(&tasks, userId); err != nil {
@@ -39,6 +40,7 @@ func (tu *taskUsecase) GetAllTasks(userId uint) ([]model.TaskResponse, error) {
 	return resTasks, nil
 }
 
+// 渡されたユーザIDと一致するユーザIDのタスク一覧の抽出
 func (tu *taskUsecase) GetTaskById(userId uint, taskId uint) (model.TaskResponse, error) {
 	task := model.Task{}
 	if err := tu.tr.GetTaskByID(&task, userId, taskId); err != nil {
@@ -53,6 +55,7 @@ func (tu *taskUsecase) GetTaskById(userId uint, taskId uint) (model.TaskResponse
 	return resTask, nil
 }
 
+// タスクの作成
 func (tu *taskUsecase) CreateTask(task model.Task) (model.TaskResponse, error) {
 	if err := tu.tr.CreateTask(&task); err != nil {
 		return model.TaskResponse{}, err
@@ -66,6 +69,7 @@ func (tu *taskUsecase) CreateTask(task model.Task) (model.TaskResponse, error) {
 	return resTask, nil
 }
 
+// タスクの更新
 func (tu *taskUsecase) UpdateTask(task model.Task, userId uint, taskId uint) (model.TaskResponse, error) {
 	if err := tu.tr.UpdateTask(&task, userId, taskId); err != nil {
 		return model.TaskResponse{}, err
@@ -79,6 +83,10 @@ func (tu *taskUsecase) UpdateTask(task model.Task, userId uint, taskId uint) (mo
 	return resTask, nil
 }
 
+// タスクの削除
 func (tu *taskUsecase) DeleteTask(userId uint, taskId uint) error {
-
+	if err := tu.tr.DeleteTask(userId, taskId); err != nil {
+		return err
+	}
+	return nil
 }
