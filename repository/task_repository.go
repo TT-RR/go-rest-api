@@ -40,6 +40,7 @@ func (tr *taskRepository) GetTaskByID(task *model.Task, userId uint, taskId uint
 	return nil
 }
 
+// タスクの作成
 func (tr *taskRepository) CreateTask(task *model.Task) error {
 	if err := tr.db.Create(task).Error; err != nil {
 		return err
@@ -47,6 +48,7 @@ func (tr *taskRepository) CreateTask(task *model.Task) error {
 	return nil
 }
 
+// タスクの更新
 func (tr *taskRepository) UpdateTask(task *model.Task, userId uint, taskId uint) error {
 	//Model…taskのポインターを渡す　Clauses…ポインターの先の値を書き換える　Where…条件を指定　Update…更新するカラムを指定
 	result := tr.db.Model(task).Clauses(clause.Returning{}).Where("id=? AND user_id=?", taskId, userId).Update("title", task.Title)
@@ -61,6 +63,7 @@ func (tr *taskRepository) UpdateTask(task *model.Task, userId uint, taskId uint)
 	return nil
 }
 
+// タスクの削除
 func (tr *taskRepository) DeleteTask(userId uint, taskId uint) error {
 	result := tr.db.Where("id=? AND user_id=?", taskId, userId).Delete(&model.Task{})
 	if result.Error != nil {
