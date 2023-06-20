@@ -65,11 +65,11 @@ func (tc *taskController) CreateTask(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 	task.UserID = uint(userId.(float64))
-	tasksRes, err := tc.tu.CreateTask(task)
+	taskRes, err := tc.tu.CreateTask(task)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusCreated, tasksRes)
+	return c.JSON(http.StatusCreated, taskRes)
 }
 
 // taskを更新する
@@ -86,11 +86,11 @@ func (tc *taskController) UpdateTask(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 	//第一引数にtask、第二引数にuserId、第三引数にtaskIdを渡す
-	tasksRes, err := tc.tu.UpdateTask(task, uint(userId.(float64)), uint(taskId))
+	taskRes, err := tc.tu.UpdateTask(task, uint(userId.(float64)), uint(taskId))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, tasksRes)
+	return c.JSON(http.StatusOK, taskRes)
 }
 
 func (tc *taskController) DeleteTask(c echo.Context) error {
