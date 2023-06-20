@@ -30,7 +30,7 @@ func (tc *taskController) GetAllTasks(c echo.Context) error {
 	//ContextからユーザIDを取得
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
-	userId := claims["userId"]
+	userId := claims["user_id"]
 
 	tasksRes, err := tc.tu.GetAllTasks(uint(userId.(float64)))
 	if err != nil {
@@ -42,7 +42,7 @@ func (tc *taskController) GetAllTasks(c echo.Context) error {
 func (tc *taskController) GetTaskById(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
-	userId := claims["userId"]
+	userId := claims["user_id"]
 	id := c.Param("taskId")
 	taskId, _ := strconv.Atoi(id)
 
