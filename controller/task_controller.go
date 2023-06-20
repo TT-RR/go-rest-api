@@ -93,5 +93,15 @@ func (tc *taskController) UpdateTask(c echo.Context) error {
 }
 
 func (tc *taskController) DeleteTask(c echo.Context) error {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	userId := claims["user_id"]
+	id := c.Param("taskId")
+	taskId, _ := strconv.Atoi(id)
 
+	err := tc.tu.DeleteTask(uint(userId.(float64)), uint(taskId))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.NoContent(http.StatusNoContent)
 }
