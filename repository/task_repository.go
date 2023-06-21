@@ -26,7 +26,7 @@ func NewTaskRepository(db *gorm.DB) ITaskRepository {
 
 // 渡されたユーザIDと一致するユーザIDのタスク一覧を取得
 func (tr *taskRepository) GetAllTasks(tasks *[]model.Task, userId uint) error {
-	if err := tr.db.Joins("User").Where("user_id=?", userId).Order("created_at").Find(tasks).Error; err != nil {
+	if err := tr.db.Joins("User").Where("user_id=?", userId).Order("create_at").Find(tasks).Error; err != nil {
 		return err
 	}
 	return nil
