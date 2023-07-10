@@ -17,7 +17,7 @@ docker ps
 3.main.goの実行
 
 ```
-go run main.go
+go run main.go -GO_ENV=dev
 ```
 
 # Postmanでの使い方
@@ -48,15 +48,18 @@ http://localhost:8080/メソッド名
 
 3.CreateTask tasks(POST)
     作りたいタスクのタイトルを入力
+
     ```
     {
         "title":"test"
     }
     ```
+
     -> id,title,create_at,update_atが返ってくる
 
 4.UpdateTask tasks/変えたいタスクのID(PUT)
     変えたいタスクのタイトルを入力
+
     ```
     {
         "title":"test5"
