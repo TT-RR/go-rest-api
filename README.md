@@ -34,11 +34,18 @@ http://localhost:8080/メソッド名
     "password":"pass1234"
 }
 ```
-2.login(POST)
+2.csrf(GET)
+
+-> CSRFトークンが付与される
+
+3.login(POST)
+
+    HeadersのKeyにX-CSRF-TOKENと入力し、Valueに付与されたCSRFトークンを貼り付ける
+    
     signupで使ったemailとパスワードでログイン
     -> jwtのトークンが付与される
 
-3.logout(POST)
+4.logout(POST)
 
 ### Task
 1.GetAllTasks tasks(GET)
